@@ -1,0 +1,46 @@
+.App {
+  min-height: 100vh;
+  background-image: url("http://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxMjA3fDB8MXxzZWFyY2h8Mnx8aGlnaCUyMHRlY2h8fDB8fHw&ixlib=rb-1.2.1&q=80&w=1080");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.searchPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title {
+  color: bisque;
+}
+.job-border {
+  border-bottom: 7px solid #176841 !important;
+  min-height: 70vh;
+  max-height: 70vh;
+  overflow: hidden;
+}
+.job-border:active {
+  border: 2px solid #6c757d !important;
+}
+.job-border:hover {
+  box-shadow: 3px 0px 10px #000000;
+}
+.detailPage {
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+}
+.btn i {
+  font-size: 30px;
+}
+.searchPage {
+  padding-top: 25vh;
+}
+.searchPage input {
+  font-size: 25px;
+}
+@media (min-width: 1200px) {
+  .jobsPage .container {
+    max-width: 1190px;
+  }
+}
