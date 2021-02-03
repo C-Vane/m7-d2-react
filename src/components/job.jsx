@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentJob: (id) => dispatch({ type: "SET_CURRENT_JOB", payload: id }),
+  setCurrentJob: (job) => dispatch({ type: "SET_CURRENT_JOB", payload: job }),
 });
 
 const Job = ({ id, type, company, title, company_logo, setCurrentJob, history, favorites, jobs }) => {
@@ -15,13 +15,13 @@ const Job = ({ id, type, company, title, company_logo, setCurrentJob, history, f
     setFav(favorites);
   }, [favorites]);
   const redirect = () => {
-    setCurrentJob(jobs.filter((job) => job.id === id)[0]);
+    setCurrentJob(jobs.filter((job) => job.id === id)[0] || favorites.filter((job) => job.id === id)[0]);
     history.push("/jobDetails");
   };
 
   return (
-    <Col md={3} className='mt-4 h-100'>
-      <Card className='job-border' style={{ cursor: "pointer" }} onClick={redirect}>
+    <Col md={3} className='mt-4'>
+      <Card className='job-border p-2' style={{ cursor: "pointer" }} onClick={redirect}>
         <Card.Img variant='top' src={company_logo} height='150vh' fluid />
         <Row className='justify-content-end mr-3'>
           <Button variant='link' className='text-warning '>

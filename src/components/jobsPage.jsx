@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Container, Row } from "react-bootstrap";
+import { Alert, Card, Col, Container, Row } from "react-bootstrap";
 import Job from "./job";
 import { connect } from "react-redux";
+import MyLoader from "./loader";
 const mapStateToProps = (state) => state;
 const mapDispatchToProps = (dispatch) => ({
   addToFavorite: (id) => dispatch({ type: "ADD_JOB_TO_FAVORITES", payload: id }),
@@ -18,9 +19,22 @@ const JobsPage = ({ jobs, error, msg }) => {
   }, [jobs, error, msg]);
   return (
     <div className='jobsPage'>
-      {massages && <Alert variant={errors ? "warning" : "success"}>{massages}</Alert>}
       <Container>
-        <Row>{data.length > 0 && data.map((job, index) => <Job key={index} {...job} />)}</Row>
+        <Row className='col-container'>
+          {massages ? (
+            <Alert variant={errors ? "warning" : "success"}>{massages}</Alert>
+          ) : data.length > 0 ? (
+            data.map((job, index) => <Job key={index} {...job} />)
+          ) : (
+            [...Array(8).keys()].map((key) => (
+              <Col md={3} className='mt-4'>
+                <Card key={key} className='p-0'>
+                  <MyLoader />
+                </Card>
+              </Col>
+            ))
+          )}
+        </Row>
       </Container>
     </div>
   );

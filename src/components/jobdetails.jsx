@@ -14,15 +14,13 @@ const JobDetails = ({ currentJob, jobs, favorites, addToFavotites, removeFromFav
   const { id, type, url, company, company_url, location, title, description, company_logo, how_to_apply } = currentJob;
   const [fav, setFav] = useState([]);
   useEffect(() => {
-    console.log(favorites);
     setFav(favorites);
   }, [favorites]);
-  console.log(currentJob);
   return (
     <div>
       <Container>
         <Row className='justify-content-between'>
-          <Link to='/jobs'>
+          <Link to={jobs.length ? "/jobs" : "/favorites"}>
             <Button variant='link'>
               <i class='fa fa-arrow-left' aria-hidden='true'></i>
             </Button>

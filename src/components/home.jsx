@@ -15,18 +15,21 @@ const Home = ({ setError, setJobs }) => {
   const [location, setLocation] = useState("");
   const [search, setSearch] = useState(false);
   const handleSearch = (e) => {
+    setSearch(true);
     e.preventDefault();
     getJobs(position, location);
-    setSearch(true);
   };
   const getJobs = async (position, location) => {
     setJobs([]);
+    setError({ status: 0, message: "" });
     try {
       const response = await fetch(process.env.REACT_APP_JOB_URL + "?description=" + position + "&location=" + location);
 
       if (response.ok) {
         const jobsArray = await response.json();
-        jobsArray.length > 0 ? setJobs(jobsArray) : setError({ status: 404, message: "No Jobs Found" });
+        setTimeout(() => {
+          jobsArray.length > 0 ? setJobs(jobsArray) : setError({ status: 404, message: "No Jobs Found" });
+        }, 1000);
       } else {
         setError({ status: response.status, message: response.toString() });
       }

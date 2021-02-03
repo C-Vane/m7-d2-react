@@ -24,8 +24,8 @@ export default function (state = {}, action) {
       return {
         ...state,
         error: {
-          status: action.payload.status ? action.payload.status : 500,
-          massage: action.payload.massage ? action.payload.massage : "WEB ERROR",
+          status: action.payload.status,
+          massage: action.payload.massage,
         },
       };
     default:
