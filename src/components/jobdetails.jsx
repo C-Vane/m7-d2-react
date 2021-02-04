@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { Toast } from "react-bootstrap";
 const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => ({
@@ -12,9 +12,14 @@ const mapDispatchToProps = (dispatch) => ({
 
 const JobDetails = ({ currentJob, jobs, favorites, addToFavotites, removeFromFavorite }) => {
   const { id, type, url, company, company_url, location, title, description, company_logo, how_to_apply } = currentJob;
-  const [fav, setFav] = useState([]);
+  const [fav, setFav] = useState([0]);
+  const [showPopover, setShowPopover] = useState([false, 0]);
   useEffect(() => {
+    fav.length > favorites.length ? setShowPopover([true, 1]) : setShowPopover([true, 0]);
     setFav(favorites);
+    setTimeout(() => {
+      setShowPopover([false, 0]);
+    }, 3000);
   }, [favorites]);
   return (
     <div>
@@ -44,6 +49,19 @@ const JobDetails = ({ currentJob, jobs, favorites, addToFavotites, removeFromFav
           </Col>
         </Row>
       </Container>
+      <Toast
+        className={showPopover[1] === 0 ? "border border-success" : "border border-danger"}
+        style={{ position: "sticky", bottom: 15, left: 15 }}
+        show={showPopover[0]}
+        onClose={() => setShowPopover([false, 0])}
+      >
+        <Toast.Header>
+          <img src={company_logo} height='20px' width='20px' className='rounded mr-2 img-fluid' alt='' />
+          <span>
+            Job from {company} {showPopover[1] === 0 ? "added to" : "removed form"} favorite
+          </span>
+        </Toast.Header>
+      </Toast>
     </div>
   );
 };

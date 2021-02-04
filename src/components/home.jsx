@@ -7,9 +7,23 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => ({
   setError: (error) => dispatch({ type: "SET_ERROR", payload: error }),
-  setJobs: (jobs) => dispatch({ type: "SET_JOBS", payload: jobs }),
+  setJobs: (position, location) =>
+    dispatch(async (dispatch) => {
+      try {
+        const response = await fetch(process.env.REACT_APP_JOB_URL + "?description=" + position + "&location=" + location);
+        if (response.ok) {
+          const jobsArray = await response.json();
+          setTimeout(() => {
+            dispatch({ type: "SET_JOBS", payload: jobsArray });
+          }, 1000);
+        } else {
+          console.log("Error:" + response.statusText);
+        }
+      } catch (error) {
+        console.log("Error:" + error);
+      }
+    }),
 });
-
 const Home = ({ setError, setJobs }) => {
   const [position, setPosition] = useState("");
   const [location, setLocation] = useState("");
@@ -17,25 +31,7 @@ const Home = ({ setError, setJobs }) => {
   const handleSearch = (e) => {
     setSearch(true);
     e.preventDefault();
-    getJobs(position, location);
-  };
-  const getJobs = async (position, location) => {
-    setJobs([]);
-    setError({ status: 0, message: "" });
-    try {
-      const response = await fetch(process.env.REACT_APP_JOB_URL + "?description=" + position + "&location=" + location);
-
-      if (response.ok) {
-        const jobsArray = await response.json();
-        setTimeout(() => {
-          jobsArray.length > 0 ? setJobs(jobsArray) : setError({ status: 404, message: "No Jobs Found" });
-        }, 1000);
-      } else {
-        setError({ status: response.status, message: response.toString() });
-      }
-    } catch (error) {
-      setError({ status: 500, message: error.message });
-    }
+    setJobs(position, location);
   };
   return (
     <div className='searchPage'>
